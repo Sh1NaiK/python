@@ -22,17 +22,12 @@
 '''
 
 name = input("Введите ваше имя: ").capitalize()
-age = input("Введите ваш возраст: ")
-
 text = ""
-
-
-def isInt(age):
-    try:
-        int(age)
-        return True
-    except:
-        return False
+age = input("Введите ваш возраст: ")
+if age.isnumeric():
+    age = int(age)
+else:
+    text += "Некорректный возраст!\n"
 
 
 def exceptions(name, age, text):
@@ -41,10 +36,11 @@ def exceptions(name, age, text):
     elif len(name) <= 3:
         text += "Имя должно содердать больше 3 символов.\n"
 
-    if not isInt(age) or age <= 0:
-        text += "Некорректный возраст!\n"
-    elif age < 14:
-        text += "Минимальный возраст 14 лет.\n"
+    if not text:
+        if age <= 0:
+            text += "Некорректный возраст!\n"
+        elif age < 14:
+            text += "Минимальный возраст 14 лет.\n"
 
     if not text:
         text = f'Привет, {name}! Тебе {age} лет.'
