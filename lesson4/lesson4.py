@@ -29,9 +29,8 @@ def name_verification(name):
         text = "Вы не ввели ваше имя!\n"
     elif len(name) <= 3:
         text = "Имя должно содердать больше 3 символов.\n"
-    for i in range(len(name)):
-        if name[i] == " " and name[i] == name[i-1]:
-            text = "Между буквами допускается только один пробел.\n"
+    if name.count(" ") > 1:
+        text = "Между буквами допускается только один пробел.\n"
     return text
 
 
@@ -67,14 +66,16 @@ def advice(name, age):
 def main():
     error = "error"
     while error:
+        res = ""
         name = cleaner(input("Введите ваше имя: ").capitalize())
         error = name_verification(name)
         age = cleaner(input("Введите ваш возраст: "))
         error += age_verification(age)
         if error:
-            print(error)
+            res = error
         else:
-            print(advice(name, age))
+            res = advice(name, age)
+        print(res)
 
 
 main()
