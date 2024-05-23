@@ -64,18 +64,17 @@ def advice(name, age):
 
 
 def main():
-    error = "error"
-    while error:
-        res = ""
+    text = "error"
+    while text:
         name = cleaner(input("Введите ваше имя: ").capitalize())
-        error = name_verification(name)
+        text = name_verification(name)
         age = cleaner(input("Введите ваш возраст: "))
-        error += age_verification(age)
-        if error:
-            res = error
-        else:
-            res = advice(name, age)
-        print(res)
+        text += age_verification(age)
+        if not text:
+            text = advice(name, age)
+        print(text)
+        if text.startswith("Привет"):
+            break
 
 
 main()
