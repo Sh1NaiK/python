@@ -11,19 +11,19 @@ import re
 import random
 
 
-def name_verification(name):
-    text = ""
+def name_verification(name) -> str | None:
+    text = None
     if not name:
         text = "Вы не ввели ваше имя!\n"
     elif len(name) <= 3:
         text = "Имя должно содердать больше 3 символов.\n"
     if name.count(" ") > 1:
         text = "Между буквами допускается только один пробел.\n"
-    return text or None
+    return text
 
 
-def age_verification(age):
-    text = ""
+def age_verification(age) -> str | None:
+    text = None
     if age.isnumeric():
         age = int(age)
         if age <= 0:
@@ -32,21 +32,22 @@ def age_verification(age):
             text = "Минимальный возраст 14 лет.\n"
     else:
         text = "Некорректный возраст!\n"
-    return text or None
+    return text
 
 
 def cleaner(data):
     return data.strip(" ")
 
 
-def advice(text, age):
+def advice(age) -> str | None:
+    text = None
     if age == '16' or age == '17':
-        text += ', Не забудь получить свой первый паспорт'
+        text = ' Не забудь получить свой первый паспорт'
     elif age == '25' or age == '26':
-        text += ', Не забудь заменить свой паспорт'
+        text = ' Не забудь заменить свой паспорт'
     elif age == '45' or age == '46':
-        text += ', Не забудь заменить свой паспорт второй раз'
-    return text or None
+        text = ' Не забудь заменить свой паспорт второй раз'
+    return text
 
 
 def is_palindrome():
@@ -73,22 +74,24 @@ def random_number():
 
 
 def main():
-    text = "error"
-    while text:
+    text = None
+    while text is None:
+
         name = cleaner(input("Введите ваше имя: ").capitalize())
-        text = name_verification(name)
-        if not text:
-            age = cleaner(input("Введите ваш возраст: "))
-            text = age_verification(age)
-        if not text:
-            text = f'Привет, {name}! Тебе {age} лет.'
-            advicee = advice(text, age)
-            if advicee != None:
-                text += advicee
-        print(text)
-        if text.startswith("Привет"):
-            break
+        if error := name_verification(name):
+            print(error)
+            continue
+
+        age = cleaner(input("Введите ваш возраст: "))
+        if error := age_verification(age):
+            print(error)
+            continue
+        text = f'Привет, {name}! Тебе {age} лет.'
+        advicee = advice(age)
+        if advicee:
+            print(text+advicee)
 
 
-main()
+if __name__ == '__main__':
+    main()
 random_number()
