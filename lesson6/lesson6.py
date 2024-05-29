@@ -66,7 +66,7 @@ def random_number():
     rand_number = random.randint(0, 10)
     while True:
         choice = input("Введите число от 0 до 10: ")
-        if (int(rand_number) == int(choice)):
+        if (rand_number == int(choice)):
             print("Молодец")
             break
         else:
