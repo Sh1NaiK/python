@@ -48,6 +48,7 @@ class Authenticator:
                 self.errors_count = 0
                 self.last_success_login_at = datetime.now()
                 self._update_auth_file()
+                print("successful login")
         except AuthorizationError:
             print("AuthorizationError")
             self.errors_count += 1
