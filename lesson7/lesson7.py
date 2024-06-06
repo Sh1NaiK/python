@@ -46,9 +46,7 @@
 4. Где вызывать ValueError
 '''
 
-from validator import Validator
-from validator import Data
-from validator import DataWithDate
+from validator import Validator, Data, DataWithDate
 from exceptions import ValidationError
 import re
 import random
