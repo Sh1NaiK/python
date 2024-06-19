@@ -20,16 +20,13 @@ class Authenticator:
         return os.path.exists(file_path)
 
     def _read_auth_file(self):
-        try:
-            with open(file_path, "r") as file:
-                auth_data = file.readlines()
-            self.login = auth_data[0].replace("\n", "")
-            self._password = auth_data[1].replace("\n", "")
-            self.last_success_login_at = datetime.fromisoformat(
-                auth_data[2].replace("\n", ""))
-            self.errors_count = int(auth_data[3])
-        except ValueError as V_error:
-            print(V_error)
+        with open(file_path, "r") as file:
+            auth_data = file.readlines()
+        self.login = auth_data[0].replace("\n", "")
+        self._password = auth_data[1].replace("\n", "")
+        self.last_success_login_at = datetime.fromisoformat(
+            auth_data[2].replace("\n", ""))
+        self.errors_count = int(auth_data[3])
 
     def _update_auth_file(self):
         with open(file_path, "w") as file:
@@ -40,31 +37,26 @@ class Authenticator:
 
     def authorize(self, login, password):
         if self.login == None:
-            raise AuthorizationError
+            raise AuthorizationError("Authorization error!")
         try:
-            if not (self.login == login and self._password == password):
-                raise AuthorizationError
-            else:
-                self.errors_count = 0
-                self.last_success_login_at = datetime.now()
-                self._update_auth_file()
-                print("successful login")
+            if self.login != login and self._password != password:
+                raise AuthorizationError("Incorrect auth data")
+            self.errors_count = 0
+            self.last_success_login_at = datetime.now()
+            self._update_auth_file()
+            print("successful login")
         except AuthorizationError:
-            print("AuthorizationError")
             self.errors_count += 1
             self._update_auth_file()
 
     def registrate(self, login, password):
-        try:
-            if self._is_auth_file_exist():
-                raise RegistrationError
+        if self._is_auth_file_exist():
+            raise RegistrationError
+        else:
+            if self.login == None:
+                self.login = login
+                self._password = password
+                self.last_success_login_at = datetime.now()
+                self._update_auth_file()
             else:
-                if self.login == None:
-                    self.login = login
-                    self._password = password
-                    self.last_success_login_at = datetime.now()
-                    self._update_auth_file()
-                else:
-                    raise RegistrationError
-        except RegistrationError:
-            print("RegistrationError")
+                raise RegistrationError
